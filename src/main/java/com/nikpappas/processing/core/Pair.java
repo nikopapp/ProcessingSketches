@@ -12,4 +12,5 @@ public class Pair<T,V> {
     public static <X,Y> Pair<X,Y> of(X _1, Y _2){
         return new Pair<>(_1,_2);
     }
+
 }

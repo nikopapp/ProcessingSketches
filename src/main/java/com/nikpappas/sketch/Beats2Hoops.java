@@ -1,6 +1,6 @@
 package com.nikpappas.sketch;
 
-import com.nikpappas.processing.core.Triplet;
+import com.nikpappas.processing.core.Trio;
 import processing.core.PApplet;
 import processing.sound.AudioIn;
 import processing.sound.FFT;
@@ -11,19 +11,13 @@ import java.util.Deque;
 
 
 public class Beats2Hoops extends PApplet {
-    /**
-     * This sketch shows how to use the FFT class to analyze a stream
-     * of sound. Change the number of bands to get more spectral bands
-     * (at the expense of more coarse-grained time resolution of the spectrum).
-     */
-
 
     // Declare the sound source and FFT analyzer variables
     private SoundFile sample;
     private FFT fft;
 
     private AudioIn in;
-    private Deque<Triplet<Float, Float, Float>> buffer;
+    private Deque<Trio<Float>> buffer;
 
     // Define how many FFT bands to use (this needs to be a power of two)
     private int bands = 32;
@@ -98,7 +92,7 @@ public class Beats2Hoops extends PApplet {
 
     void recalculate() {
         if (timestamp % 5 == 0 || timestamp % 7 == 0) {
-            buffer.addFirst(Triplet.of(
+            buffer.addFirst(Trio.of(
                     sum[1] * 700 + MIN_RADIUS, sum[10] * 3000 + MIN_RADIUS, sum[22] * 6000 + MIN_RADIUS));
 
             if (buffer.size() > 20) {
