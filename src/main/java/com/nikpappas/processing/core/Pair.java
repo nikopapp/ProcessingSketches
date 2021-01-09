@@ -13,4 +13,11 @@ public class Pair<T,V> {
         return new Pair<>(_1,_2);
     }
 
+    @Override
+    public String toString() {
+        return "(" +
+                 _1 +
+                "," + _2 +
+                ')';
+    }
 }
