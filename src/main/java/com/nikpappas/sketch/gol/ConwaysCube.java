@@ -11,6 +11,16 @@ import java.util.stream.Stream;
 public class ConwaysCube {
     private Map<Integer, Map<Integer, Map<Integer, Character>>> cube;
     private int extent = 0;
+    private final int maxExtent;
+
+
+    public ConwaysCube() {
+        this(-1);
+    }
+
+    public ConwaysCube(int maxExtent) {
+        this.maxExtent = maxExtent;
+    }
 
     public void put(int x, int y, int z, char c) {
         calcExtent(x, y, z);
@@ -27,9 +37,15 @@ public class ConwaysCube {
     }
 
     private void calcExtent(int x, int y, int z) {
-        Stream.of(x, y, z).forEach(v -> {
-            if (abs(v) > extent) extent = v;
-        });
+        if (maxExtent == -1) {
+            Stream.of(x, y, z).forEach(v -> {
+                if (abs(v) > extent) extent = v;
+            });
+        } else {
+            Stream.of(x, y, z).filter(a -> abs(a) < maxExtent).forEach(v -> {
+                if (abs(v) > extent) extent = v;
+            });
+        }
     }
 
     public ConwaysCube clone() {
@@ -88,7 +104,7 @@ public class ConwaysCube {
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 for (int k = -1; k <= 1; k++) {
-                    if (i == j && j == k) continue;
+                    if (i == 0 && j == 0 && k == 0) continue;
                     if (isAlive(x + i, y + j, z + k)) {
                         alive++;
                     }
