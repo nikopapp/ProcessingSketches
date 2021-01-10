@@ -15,7 +15,7 @@ public class GameOfLife3D extends PApplet {
     boolean pause = true;
     float scaleC = 20;
     float colourScale = 20;
-
+    private static final int BACKGROUND =200;
 
 
     public static void main(String[] args) {
@@ -29,7 +29,7 @@ public class GameOfLife3D extends PApplet {
 //        size(900, 800, P3D);
         char[][] init = new char[][]{
                 {'.', '#', '.'},
-                {'#', '.', '#'},
+                {'.', '#', '.'},
                 {'.', '#', '.'},
         };
 
@@ -43,13 +43,12 @@ public class GameOfLife3D extends PApplet {
 
     @Override
     public void setup() {
-        background(33);
+        background(BACKGROUND);
     }
 
     @Override
     public void draw() {
-        stroke(30);
-        background(33);
+        background(BACKGROUND);
         pushMatrix();
         translate(width / 2, height / 2, 0);
 
@@ -81,18 +80,20 @@ public class GameOfLife3D extends PApplet {
 
     private void drawCubes() {
         cube.getCoords().forEach(t -> {
-            pushMatrix();
-            translate(t._1 * scaleC, t._2 * scaleC, t._3 * scaleC);
-            fill(abs(t._1) * colourScale, abs(t._2) * colourScale, abs(t._3) * colourScale);
             if (cube.isAlive(t._1, t._2, t._3)) {
+                pushMatrix();
+                translate(t._1 * scaleC, t._2 * scaleC, t._3 * scaleC);
+                stroke(abs(t._1) * 4*colourScale/5, abs(t._2) * 4*colourScale/5, abs(t._3) * 4*colourScale/5);
+                fill(abs(t._1) * colourScale, abs(t._2) * colourScale, abs(t._3) * colourScale);
                 box(10);
+                popMatrix();
             } else {
 //                box(2);
             }
-            popMatrix();
         });
 
     }
+
     @Override
     public void keyPressed() {
         if (key == ' ') { // On/off of pause
