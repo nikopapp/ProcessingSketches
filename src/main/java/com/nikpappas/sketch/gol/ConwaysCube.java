@@ -2,10 +2,11 @@ package com.nikpappas.sketch.gol;
 
 import com.nikpappas.processing.core.Trio;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class ConwaysCube {
@@ -25,10 +26,10 @@ public class ConwaysCube {
     public void put(int x, int y, int z, char c) {
         calcExtent(x, y, z);
         if (cube == null) {
-            cube = new HashMap<>();
+            cube = new ConcurrentHashMap<>();
         }
-        cube.putIfAbsent(x, new HashMap<>());
-        cube.get(x).putIfAbsent(y, new HashMap<>());
+        cube.putIfAbsent(x, new ConcurrentHashMap<>());
+        cube.get(x).putIfAbsent(y, new ConcurrentHashMap<>());
         cube.get(x).get(y).put(z, c);
     }
 
@@ -77,18 +78,21 @@ public class ConwaysCube {
     public void iterate() {
         ConwaysCube buffer = clone();
         int newExtent = getExtent() + 1;
-        for (int x = -newExtent; x <= newExtent; x++) {
-            for (int y = -newExtent; y <= newExtent; y++) {
-                for (int z = -newExtent; z <= newExtent; z++) {
-                    int alive = buffer.countAliveNeighbours(x, y, z);
-                    if (buffer.isAlive(x, y, z) && (alive != 2 && alive != 3)) {
-                        put(x, y, z, '.');
-                    } else if (!buffer.isAlive(x, y, z) && alive == 3) {
-                        put(x, y, z, '#');
-                    }
-                }
-            }
-        }
+        int newExtentExclusiveUpperLimit = newExtent + 1;
+        IntStream.range(-newExtent, newExtentExclusiveUpperLimit).forEach(
+                x -> IntStream.range(-newExtent, newExtentExclusiveUpperLimit).forEach(
+                        y -> IntStream.range(-newExtent, newExtentExclusiveUpperLimit).forEach(
+                                z -> {
+                                    int alive = buffer.countAliveNeighbours(x, y, z);
+                                    if (buffer.isAlive(x, y, z) && (alive != 2 && alive != 3)) {
+                                        put(x, y, z, '.');
+                                    } else if (!buffer.isAlive(x, y, z) && alive == 3) {
+                                        put(x, y, z, '#');
+                                    }
+                                }
+                        )
+                )
+        );
     }
 
     private int abs(int v) {
@@ -118,6 +122,15 @@ public class ConwaysCube {
         return get(x, y, z) == '#';
     }
 
+
+    public int countAlive() {
+        return cube.values().stream()
+                .mapToInt(x -> x.values().stream()
+                        .mapToInt(y -> y.values().stream()
+                                .mapToInt(z -> z.equals('#') ? 1 : 0).sum()).sum()).sum();
+
+    }
+
     public Set<Trio<Integer>> getCoords() {
         Set<Trio<Integer>> trios = new HashSet<>();
         cube.forEach(((x, xvals) ->
@@ -126,4 +139,22 @@ public class ConwaysCube {
         return trios;
     }
 
+    public String toHashString() {
+        StringBuilder res = new StringBuilder();
+        cube.forEach(((x, xvals) ->
+                xvals.forEach((y, yvals) ->
+                        yvals.forEach((z, c) -> res.append(c)))));
+        return res.toString();
+    }
+
+    public static ConwaysCube of(String[] init) {
+        ConwaysCube cube = new ConwaysCube();
+        for (int i = 0; i < init[0].length(); i++) {
+            for (int y = 0; y < init.length; y++) {
+                cube.put(i, y, 0, init[y].charAt(i));
+            }
+        }
+
+        return cube;
+    }
 }

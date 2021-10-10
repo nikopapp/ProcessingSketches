@@ -8,10 +8,12 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
     implementation 'org.processing:core:3.3.7'
+    implementation files('/Users/nikos/.m2/repository/com/github/bhlangonijr/chesslib/chesslib/1.2.5/chesslib-1.2.5.jar')
     implementation files('/Users/nikos/libs/org/processing/processing-core/core.jar')
     implementation files('/Users/nikos/libs/org/processing/processing-sound/sound.jar')
     implementation files('/Users/nikos/libs/org/processing/processing-sound/jsyn-20171016.jar')

@@ -4,7 +4,11 @@ import processing.core.PApplet;
 
 public class GameOfLife extends PApplet {
 
-    // Size of cells
+    static final int[][] INIT = {
+            {0, 0, 0, 0},
+            {1, 1, 1, 1},
+            {0, 0, 0, 0},
+    };
     int cellSize = 5;
 
     // How likely for a cell to be alive at start (in percentage)
@@ -48,18 +52,11 @@ public class GameOfLife extends PApplet {
         stroke(48);
 
 
-        // Initialization of cells
-        for (int x = 0; x < width / cellSize; x++) {
-            for (int y = 0; y < height / cellSize; y++) {
-                float state = random(100);
-                if (state > probabilityOfAliveAtStart) {
-                    state = 0;
-                } else {
-                    state = 1;
-                }
-                cells[x][y] = (int) state; // Save state of each cell
-            }
-        }
+//         Initialization of cells
+//        randomInit();
+        startingArrayInit();
+
+
         background(0); // Fill in black in case cells don't cover all the windows
     }
 
@@ -149,7 +146,7 @@ public class GameOfLife extends PApplet {
                 } // End of if
             } // End of y loop
         } // End of x loop
-    } // End of function
+    }
 
     @Override
     public void keyPressed() {
@@ -179,5 +176,35 @@ public class GameOfLife extends PApplet {
         }
     }
 
+    void randomInit() {
+        for (int x = 0; x < width / cellSize; x++) {
+            for (int y = 0; y < height / cellSize; y++) {
+                float state = random(100);
+                if (state > probabilityOfAliveAtStart) {
+                    state = 0;
+                } else {
+                    state = 1;
+                }
+                cells[x][y] = (int) state; // Save state of each cell
+            }
+        }
+    }
+
+    void startingArrayInit() {
+        int xCells = width / cellSize;
+        int yCells = height / cellSize;
+        for (int x = 0; x < xCells; x++) {
+            for (int y = 0; y < yCells; y++) {
+                if (x > (xCells - INIT[0].length) / 2 && x < (xCells + INIT[0].length) / 2 &&
+                        y > (yCells - INIT.length) / 2 && y < (yCells + INIT.length) / 2) {
+                    cells[x][y] = INIT[-1+x-(xCells - INIT[0].length) / 2][-1+y-(yCells - INIT.length) / 2];
+                } else {
+                    cells[x][y] = 0;
+                }
+                System.out.println(x+","+y+"-"+cells[x][y]);
+            }
+        }
+    }
 
 }
+

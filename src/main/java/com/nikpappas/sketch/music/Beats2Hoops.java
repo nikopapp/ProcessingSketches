@@ -1,4 +1,4 @@
-package com.nikpappas.sketch;
+package com.nikpappas.sketch.music;
 
 import com.nikpappas.processing.core.Trio;
 import processing.core.PApplet;
@@ -20,19 +20,19 @@ public class Beats2Hoops extends PApplet {
     private Deque<Trio<Float>> buffer;
 
     // Define how many FFT bands to use (this needs to be a power of two)
-    private int bands = 32;
+    private static final int bands = 32;
 
-    private final int MIN_RADIUS = 20;
+    private static final int MIN_RADIUS = 20;
 
     // Define a smoothing factor which determines how much the spectrums of consecutive
-// points in time should be combined to create a smoother visualisation of the spectrum.
-// A smoothing factor of 1.0 means no smoothing (only the data from the newest analysis
-// is rendered), decrease the factor down towards 0.0 to have the visualisation update
-// more slowly, which is easier on the eye.
-    private float smoothingFactor = 0.2f;
+    // points in time should be combined to create a smoother visualisation of the spectrum.
+    // A smoothing factor of 1.0 means no smoothing (only the data from the newest analysis
+    // is rendered), decrease the factor down towards 0.0 to have the visualisation update
+    // more slowly, which is easier on the eye.
+    private final float smoothingFactor = 0.2f;
 
     // Create a vector to store the smoothed spectrum data in
-    private float[] sum = new float[bands];
+    private static float[] sum = new float[bands];
 
     // Variables for drawing the spectrum:
 
