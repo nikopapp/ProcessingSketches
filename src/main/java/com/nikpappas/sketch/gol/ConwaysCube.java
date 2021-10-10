@@ -157,4 +157,17 @@ public class ConwaysCube {
 
         return cube;
     }
+
+    public static ConwaysCube of(String[][] init) {
+        ConwaysCube cube = new ConwaysCube();
+        for (int i = 0; i < init.length; i++) {
+            for (int j = 0; j < init[0].length; j++) {
+                for (int k = 0; k < init[0][0].length(); k++) {
+                    cube.put(i, j, k, init[i][j].charAt(k));
+                }
+            }
+        }
+
+        return cube;
+    }
 }

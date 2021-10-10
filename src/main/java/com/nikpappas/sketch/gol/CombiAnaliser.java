@@ -20,6 +20,7 @@ public class CombiAnaliser {
         for (int i = 0; i < combinations.size(); i++) {
             withIndex.put(i, combinations.get(i));
         }
+
         System.out.println("# combi:" + combinations.size());
         List<Triplet<String[], Couple<Integer>, State>> results = withIndex.entrySet().stream()
                 .parallel()
