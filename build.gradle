@@ -12,12 +12,14 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.processing:core:3.3.7'
-    implementation files('/Users/nikos/.m2/repository/com/github/bhlangonijr/chesslib/chesslib/1.2.5/chesslib-1.2.5.jar')
-    implementation files('/Users/nikos/libs/org/processing/processing-core/core.jar')
-    implementation files('/Users/nikos/libs/org/processing/processing-sound/sound.jar')
-    implementation files('/Users/nikos/libs/org/processing/processing-sound/jsyn-20171016.jar')
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    implementation(
+            'org.processing:core:3.3.7',
+            files('/Users/nikos/.m2/repository/com/github/bhlangonijr/chesslib/chesslib/1.2.5/chesslib-1.2.5.jar'),
+            files('/Users/nikos/libs/org/processing/processing-core/core.jar'),
+            files('/Users/nikos/libs/org/processing/processing-sound/sound.jar'),
+            files('/Users/nikos/libs/org/processing/processing-sound/jsyn-20171016.jar'),
+    )
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
 
@@ -25,6 +27,6 @@ test {
     useJUnitPlatform()
 }
 
-run{
+run {
     mainClassName = 'com.nikpappas.sketch.Beets2Hoops'
 }

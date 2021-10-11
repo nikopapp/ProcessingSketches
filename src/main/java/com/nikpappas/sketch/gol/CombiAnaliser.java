@@ -15,7 +15,7 @@ public class CombiAnaliser {
     public static void main(String[] args) {
         GolInitialPositionCalc combiCalc = new GolInitialPositionCalc();
 
-        List<String[]> combinations = combiCalc.generateCombinations(4, 4);
+        List<String[]> combinations = combiCalc.generateCombinations(3, 3);
         Map<Integer, String[]> withIndex = new TreeMap<>();
         for (int i = 0; i < combinations.size(); i++) {
             withIndex.put(i, combinations.get(i));
@@ -60,6 +60,8 @@ public class CombiAnaliser {
         System.out.println("results");
         results.stream()
                 .filter(x -> !OVERFLOW.equals(x._3))
+                .filter(x -> !DEAD.equals(x._3))
+//                .filter(x -> REPEAT.equals(x._3))
 //                .filter(x -> x._2._1 > 1)
 //                .filter(x -> x._2._1 != x._2._2)/
                 .forEach(x -> {

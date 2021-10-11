@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 public class ConwaysCube {
     private Map<Integer, Map<Integer, Map<Integer, Character>>> cube;
     private final int maxExtent;
-    private int posExtent =0;
+    private int posExtent = 0;
     private int minExtent;
 
 
@@ -37,6 +37,7 @@ public class ConwaysCube {
     public int getPosExtent() {
         return posExtent;
     }
+
     public int getMinExtent() {
         return minExtent;
     }
@@ -83,16 +84,16 @@ public class ConwaysCube {
 
     public void iterate() {
         ConwaysCube buffer = clone();
-        int newMinExtent = getMinExtent()- 1;
-        int newPosExtent = getPosExtent() + 1;
-        IntStream.range(-newMinExtent, newPosExtent).forEach(
-                x -> IntStream.range(-newMinExtent, newPosExtent).forEach(
-                        y -> IntStream.range(-newMinExtent, newPosExtent).forEach(
+        int newMinExtent = getMinExtent() - 2;
+        int newPosExtent = getPosExtent() + 2;
+        IntStream.range(newMinExtent, newPosExtent).forEach(
+                x -> IntStream.range(newMinExtent, newPosExtent).forEach(
+                        y -> IntStream.range(newMinExtent, newPosExtent).forEach(
                                 z -> {
                                     int alive = buffer.countAliveNeighbours(x, y, z);
-                                    if (buffer.isAlive(x, y, z) && (alive != 2 && alive != 3)) {
+                                    if (buffer.isAlive(x, y, z) && (alive != 4 && alive != 3)) {
                                         put(x, y, z, '.');
-                                    } else if (!buffer.isAlive(x, y, z) && alive == 3) {
+                                    } else if (!buffer.isAlive(x, y, z) && alive == 4) {
                                         put(x, y, z, '#');
                                     }
                                 }
@@ -148,17 +149,18 @@ public class ConwaysCube {
 
     public String toHashString() {
         StringBuilder res = new StringBuilder();
-        IntStream.range(-minExtent, posExtent + 1).forEach(x ->
-                IntStream.range(-minExtent, posExtent + 1).forEach(y ->
-                        IntStream.range(-minExtent, posExtent + 1).forEach(z -> {
+        IntStream.range(minExtent, posExtent + 1).forEach(x ->
+                IntStream.range(minExtent, posExtent + 1).forEach(y ->
+                        IntStream.range(minExtent, posExtent + 1).forEach(z -> {
                             res.append(get(x, y, z));
                         })));
         return res.toString();
     }
 
-    public int getAbsExtent(){
+    public int getAbsExtent() {
         return Math.max(abs(minExtent), posExtent);
     }
+
     public String toHashStringBounding() {
         StringBuilder res = new StringBuilder();
         StringBuilder buffer = new StringBuilder();

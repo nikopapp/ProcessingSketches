@@ -98,22 +98,20 @@ public class GameOfLife3D extends PApplet {
                 cube.put(i - init.length / 2, j - init[i].length / 2, 0, init[i][j]);
             }
         }
-//        String[] cubeInit = {
-//                "...#",
-//                "#..#",
-//                "##.#"
-//        };
 
-//        [..., ..., ..#] [.#., #.., ..#] 
-//        [##., ##., ...],[..#, ###, ##.]
-//..##, ###., #### REPEAT
-//        #.., ..#, #..
         String[][] cubeInit = {
                 {
+                        ".##",
                         "#..",
-                        "..#",
                         "#..",
-                }};
+                },
+                {
+                        "...",
+                        "###",
+                        "###"
+                },
+
+        };
         cube = ConwaysCube.of(cubeInit);
     }
 
