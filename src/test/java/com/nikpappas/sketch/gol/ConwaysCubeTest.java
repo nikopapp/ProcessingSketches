@@ -30,7 +30,7 @@ public class ConwaysCubeTest {
                 }};
 
         ConwaysCube cube = ConwaysCube.of(cubeInit);
-        assertEquals(2, cube.getExtent());
+        assertEquals(2, cube.getAbsExtent());
 
     }
 
@@ -38,7 +38,7 @@ public class ConwaysCubeTest {
     public void minExtent() {
         ConwaysCube cube = new ConwaysCube();
         cube.put(0,3,-5, '.');
-        assertEquals(5, cube.getExtent());
+        assertEquals(-5, cube.getMinExtent());
     }
 
     @Test
@@ -68,11 +68,11 @@ public class ConwaysCubeTest {
     public Stream<DynamicTest> testToHash2d() {
         Stream<Pair<String[], String>> input = Stream.of(
                 Pair.of(new String[]{"#"}, "#"),
-                Pair.of(new String[]{"#", "#"}, ".............#..#.........."),
-                Pair.of(new String[]{".", "."}, "..........................."),
-                Pair.of(new String[]{".", "#"}, "................#.........."),
-                Pair.of(new String[]{"#", "."}, ".............#............."),
-                Pair.of(new String[]{"#..", "#..", "#.."}, "..............................................................#....#....#....................................................")
+                Pair.of(new String[]{"#", "#"}, "#.#....."),
+                Pair.of(new String[]{".", "."}, "........"),
+                Pair.of(new String[]{".", "#"}, "..#....."),
+                Pair.of(new String[]{"#", "."}, "#......."),
+                Pair.of(new String[]{"#..", "#..", "#.."}, "#..#..#....................")
         );
         return DynamicTest.stream(input, x -> "2D hash test -> " + x._2, (c) -> {
             System.out.println(Arrays.toString(c._1));
@@ -90,11 +90,11 @@ public class ConwaysCubeTest {
                 Pair.of(new String[][]{
                         {"#"},
                         {"#"},
-                }, ".............#........#...."),
+                }, "#...#..."),
                 Pair.of(new String[][]{
                         {"##"},
                         {"#."},
-                }, ".............##.......#....")
+                }, "##..#...")
         );
         return DynamicTest.stream(input, x -> "3D hash test -> " + x._2, (c) -> {
             System.out.println(Arrays.toString(c._1));
