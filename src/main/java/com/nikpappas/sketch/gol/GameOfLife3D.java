@@ -103,23 +103,17 @@ public class GameOfLife3D extends PApplet {
 //                "#..#",
 //                "##.#"
 //        };
+
+//        [..., ..., ..#] [.#., #.., ..#] 
+//        [##., ##., ...],[..#, ###, ##.]
+//..##, ###., #### REPEAT
+//        #.., ..#, #..
         String[][] cubeInit = {
                 {
-                        "...",
-                        ".#.",
-                        "...",
-                },
-                {
-                        ".#.",
-                        "#.#",
-                        ".#."
-                },
-                {
-                        "...",
-                        ".#.",
-                        "...",
-                },
-        };
+                        "#..",
+                        "..#",
+                        "#..",
+                }};
         cube = ConwaysCube.of(cubeInit);
     }
 
@@ -134,15 +128,17 @@ public class GameOfLife3D extends PApplet {
         pushMatrix();
         translate(width / 2, height / 2, 0);
 
-        int extent = cube.getExtent();
-        float orbitRadius = mouseX / 2 + 30 * extent;
-        float ypos = (mouseY - (height / 2)) / 3 * extent;
+        int posExtent = cube.getPosExtent();
+        int minExtent = cube.getMinExtent();
+        int absExtent = max(posExtent, abs(minExtent));
+        float orbitRadius = mouseX / 2 + 30 * absExtent;
+        float ypos = (mouseY - (height / 2)) / 3 * absExtent;
         float xpos = cos(radians(rotation)) * orbitRadius;
         float zpos = sin(radians(rotation)) * orbitRadius;
 
         camera(xpos, ypos, zpos, 0, 0, 0, 0, -1, 0);
 
-        timed(() -> drawCubes(extent), "draw");
+        timed(() -> drawCubes(absExtent), "draw");
         popMatrix();
         int curIteration = millis() - firsttimestamp;
         if (curIteration - timestamp > 1000 && !pause) {
@@ -150,6 +146,8 @@ public class GameOfLife3D extends PApplet {
             timed(cube::iterate, "Iterate " + iteration++);
         }
         text(iteration, 30, 30);
+        text(cube.countAlive(), 30, 60);
+        text(cube.toHashString(), 30, 90);
         int delayTime = 30 - (curIteration - renderTime);
         renderTime = curIteration;
         if (delayTime > 0) {
@@ -172,6 +170,7 @@ public class GameOfLife3D extends PApplet {
                         stroke(abs(t._1) * 4 * colourScale / 5, abs(t._2) * 4 * colourScale / 5, abs(t._3) * 4 * colourScale / 5);
                         fill(abs(t._1) * colourScale, abs(t._2) * colourScale, abs(t._3) * colourScale);
                         box(10);
+//                        text(t._1+","+t._2+","+t._3, 0,0);
                         popMatrix();
                     } else {
 //                box(2);

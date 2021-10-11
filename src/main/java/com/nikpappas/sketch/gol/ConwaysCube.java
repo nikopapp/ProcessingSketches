@@ -11,8 +11,9 @@ import java.util.stream.Stream;
 
 public class ConwaysCube {
     private Map<Integer, Map<Integer, Map<Integer, Character>>> cube;
-    private int extent = 0;
     private final int maxExtent;
+    private int posExtent =0;
+    private int minExtent;
 
 
     public ConwaysCube() {
@@ -33,18 +34,23 @@ public class ConwaysCube {
         cube.get(x).get(y).put(z, c);
     }
 
-    public int getExtent() {
-        return extent;
+    public int getPosExtent() {
+        return posExtent;
+    }
+    public int getMinExtent() {
+        return minExtent;
     }
 
     private void calcExtent(int x, int y, int z) {
         if (maxExtent == -1) {
             Stream.of(x, y, z).forEach(v -> {
-                if (abs(v) > extent) extent = v;
+                if (v > posExtent) posExtent = v;
+                if (v < minExtent) minExtent = v;
             });
         } else {
-            Stream.of(x, y, z).filter(a -> abs(a) < maxExtent).forEach(v -> {
-                if (abs(v) > extent) extent = v;
+            Stream.of(x, y, z).filter(a -> abs(a) <= maxExtent).forEach(v -> {
+                if (v > posExtent) posExtent = v;
+                if (v < minExtent) minExtent = v;
             });
         }
     }
@@ -77,11 +83,11 @@ public class ConwaysCube {
 
     public void iterate() {
         ConwaysCube buffer = clone();
-        int newExtent = getExtent() + 1;
-        int newExtentExclusiveUpperLimit = newExtent + 1;
-        IntStream.range(-newExtent, newExtentExclusiveUpperLimit).forEach(
-                x -> IntStream.range(-newExtent, newExtentExclusiveUpperLimit).forEach(
-                        y -> IntStream.range(-newExtent, newExtentExclusiveUpperLimit).forEach(
+        int newMinExtent = getMinExtent()- 1;
+        int newPosExtent = getPosExtent() + 1;
+        IntStream.range(-newMinExtent, newPosExtent).forEach(
+                x -> IntStream.range(-newMinExtent, newPosExtent).forEach(
+                        y -> IntStream.range(-newMinExtent, newPosExtent).forEach(
                                 z -> {
                                     int alive = buffer.countAliveNeighbours(x, y, z);
                                     if (buffer.isAlive(x, y, z) && (alive != 2 && alive != 3)) {
@@ -139,11 +145,38 @@ public class ConwaysCube {
         return trios;
     }
 
+
     public String toHashString() {
         StringBuilder res = new StringBuilder();
-        cube.forEach(((x, xvals) ->
-                xvals.forEach((y, yvals) ->
-                        yvals.forEach((z, c) -> res.append(c)))));
+        IntStream.range(-minExtent, posExtent + 1).forEach(x ->
+                IntStream.range(-minExtent, posExtent + 1).forEach(y ->
+                        IntStream.range(-minExtent, posExtent + 1).forEach(z -> {
+                            res.append(get(x, y, z));
+                        })));
+        return res.toString();
+    }
+
+    public int getAbsExtent(){
+        return Math.max(abs(minExtent), posExtent);
+    }
+    public String toHashStringBounding() {
+        StringBuilder res = new StringBuilder();
+        StringBuilder buffer = new StringBuilder();
+        int extentCur = getAbsExtent();
+        IntStream.range(-extentCur, extentCur + 1).forEach(x ->
+                IntStream.range(-extentCur, extentCur + 1).forEach(y ->
+                        IntStream.range(-extentCur, extentCur + 1).forEach(z -> {
+                            char c = get(x, y, z);
+                            if (res.length() == 0 && c == '#') {
+                                res.append(c);
+                            } else if (res.length() > 0) {
+                                buffer.append(c);
+                                if (c == '#') {
+                                    res.append(buffer);
+                                    buffer.setLength(0);
+                                }
+                            }
+                        })));
         return res.toString();
     }
 
