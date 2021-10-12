@@ -3,8 +3,11 @@ package com.nikpappas.sketch.gol;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
 public class GolInitialPositionCalc {
     public static void main(String[] args) {
@@ -86,5 +89,28 @@ public class GolInitialPositionCalc {
         return build;
     }
 
+
+    public List<String[][]> generateRandomCombinations(int n, int x, int y, int z) {
+        String sample = IntStream.range(0, z).mapToObj(__ -> "#").collect(joining(""));
+        return IntStream.range(0, n).mapToObj(__ -> {
+            String[][] a = new String[y][];
+            for (int i = 0; i < y; i++) {
+                a[i] = new String[x];
+                for (int j = 0; j < x; j++) {
+                    StringBuilder sb = new StringBuilder();
+                    for (int k = 0; k < sample.length(); k++) {
+                        String cur = Math.random() > 0.5 ? "#" : ".";
+                        sb.append(cur);
+
+                    }
+                    a[i][j] = sb.toString();
+
+                }
+            }
+            return a;
+        }).collect(toList());
+
+
+    }
 
 }

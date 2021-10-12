@@ -2,10 +2,9 @@ package com.nikpappas.sketch.gol;
 
 import com.nikpappas.processing.core.Trio;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -32,6 +31,7 @@ public class ConwaysCube {
         cube.putIfAbsent(x, new ConcurrentHashMap<>());
         cube.get(x).putIfAbsent(y, new ConcurrentHashMap<>());
         cube.get(x).get(y).put(z, c);
+
     }
 
     public int getPosExtent() {
@@ -91,9 +91,9 @@ public class ConwaysCube {
                         y -> IntStream.range(newMinExtent, newPosExtent).forEach(
                                 z -> {
                                     int alive = buffer.countAliveNeighbours(x, y, z);
-                                    if (buffer.isAlive(x, y, z) && (alive != 4 && alive != 3)) {
+                                    if (buffer.isAlive(x, y, z) && (5 >= alive || alive >= 13)) {
                                         put(x, y, z, '.');
-                                    } else if (!buffer.isAlive(x, y, z) && alive == 4) {
+                                    } else if (!buffer.isAlive(x, y, z) && 11 <= alive && alive <= 15) {
                                         put(x, y, z, '#');
                                     }
                                 }
@@ -204,5 +204,23 @@ public class ConwaysCube {
         }
 
         return cube;
+    }
+
+    private static ConwaysCube of(List<List<String>> init) {
+        ConwaysCube cons = new ConwaysCube(-1);
+        for (int i = 0; i < init.size(); i++) {
+            for (int j = 0; j < init.get(i).size(); j++) {
+                for (int z = 0; z < init.get(i).get(j).length(); z++) {
+                    cons.put(i, j, z, init.get(i).get(j).charAt(z));
+                }
+
+            }
+        }
+        return cons;
+    }
+
+    public static ConwaysCube parse(String input) {
+        List<List<String>> init = Arrays.stream(input.split("--")).map(String::trim).map(x -> Arrays.stream(x.split(",")).map(s -> s.trim()).collect(Collectors.toList())).collect(Collectors.toList());
+        return of(init);
     }
 }

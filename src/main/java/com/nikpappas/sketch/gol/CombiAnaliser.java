@@ -4,6 +4,7 @@ import com.nikpappas.processing.core.Couple;
 import com.nikpappas.processing.core.Triplet;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.nikpappas.sketch.gol.State.*;
 import static java.util.stream.Collectors.toList;
@@ -15,17 +16,18 @@ public class CombiAnaliser {
     public static void main(String[] args) {
         GolInitialPositionCalc combiCalc = new GolInitialPositionCalc();
 
-        List<String[]> combinations = combiCalc.generateCombinations(3, 3);
-        Map<Integer, String[]> withIndex = new TreeMap<>();
+        List<String[][]> combinations = combiCalc.generateRandomCombinations(100, 5, 5, 5);
+//        List<String[]> combinations = combiCalc.generateCombinations(3, 3);
+        Map<Integer, String[][]> withIndex = new TreeMap<>();
         for (int i = 0; i < combinations.size(); i++) {
             withIndex.put(i, combinations.get(i));
         }
 
         System.out.println("# combi:" + combinations.size());
-        List<Triplet<String[], Couple<Integer>, State>> results = withIndex.entrySet().stream()
+        List<Triplet<String[][], Couple<Integer>, State>> results = withIndex.entrySet().stream()
                 .parallel()
                 .map(x -> {
-                    String[] v = x.getValue();
+                    String[][] v = x.getValue();
                     if (x.getKey() % 10 == 0) {
                         System.out.println(x.getKey());
                     }
@@ -65,7 +67,10 @@ public class CombiAnaliser {
 //                .filter(x -> x._2._1 > 1)
 //                .filter(x -> x._2._1 != x._2._2)/
                 .forEach(x -> {
-                    System.out.println(Arrays.toString(x._1) + " " + x._2._1 + " " + x._2._2 + " " + x._3);
+                    System.out.println(
+                            Arrays.stream(x._1).map(Arrays::toString)
+                                    .collect(Collectors.joining(" -- ")) +
+                                    " " + x._2._1 + " " + x._2._2 + " " + x._3);
                 });
 
     }
