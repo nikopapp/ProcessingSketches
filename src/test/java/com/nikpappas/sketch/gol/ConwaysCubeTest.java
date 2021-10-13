@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -103,7 +104,7 @@ public class ConwaysCubeTest {
                 ), ".#......"),
                 Pair.of(asList(
                         Triplet.of(1, 1, '#')
-                ), ".......#"),
+                ), "......#."),
                 Pair.of(asList(
                         Triplet.of(1, 2, '#'),
                         Triplet.of(2, 2, '#')
@@ -112,7 +113,7 @@ public class ConwaysCubeTest {
         return DynamicTest.stream(input, x -> "2D hash test -> " + x._2, (c) -> {
             ConwaysCube cube = new ConwaysCube();
             c._1.forEach(i -> {
-                cube.put(i._1,i._2,0,i._3);
+                cube.put(i._1, i._2, 0, i._3);
             });
 
             assertEquals(c._2, cube.toHashString());
@@ -186,6 +187,82 @@ public class ConwaysCubeTest {
         });
 
 
+    }
+
+    @Test
+    public void testToStrinArrayEmpty() {
+        ConwaysCube cube = new ConwaysCube();
+        String[][] actual = cube.toStringArray();
+        String[][] expected = new String[][]{
+                {}
+        };
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStrinArray() {
+        ConwaysCube cube = new ConwaysCube();
+        cube.put(0, 0, 0, '#');
+        String[][] actual = cube.toStringArray();
+        String[][] expected = new String[][]{
+                {"#"}
+        };
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStrinArrayOffset() {
+        ConwaysCube cube = new ConwaysCube();
+        cube.put(1, 2, 3, '#');
+        String[][] actual = cube.toStringArray();
+        String[][] expected = new String[][]{
+                {"#"},
+        };
+        assertArrayEquals(expected, actual);
+    }
+
+    @TestFactory
+    public Stream<DynamicTest> testToStrinArrayOffsetComplex() {
+        Stream<Pair<List<Trio<Integer>>, String[][]>> input = Stream.of(
+                Pair.of(asList(
+                                Trio.of(1, 2, 3),
+                                Trio.of(1, 2, 1)
+                        ),
+                        new String[][]{
+                                {"#.#"},
+                        }
+                ),
+                // Test 2
+                Pair.of(asList(
+                                Trio.of(2, 2, 1),
+                                Trio.of(1, 2, 1)
+                        ),
+                        new String[][]{
+                                {"#"},
+                                {"#"},
+                        }
+                ),
+                // Test 3
+                Pair.of(asList(
+                                Trio.of(1, 2, 3),
+                                Trio.of(3, 2, 1)
+                        ),
+                        new String[][]{
+                                {"..#"},
+                                {"..."},
+                                {"#.."},
+                        }
+                )
+
+        );
+
+        return DynamicTest.stream(input, x -> "Complex toStringArray -> " + x._2, (c) -> {
+            ConwaysCube cube = new ConwaysCube();
+            c._1.forEach(coord -> cube.put(coord._1, coord._2, coord._3, '#'));
+            String[][] actual = cube.toStringArray();
+            String[][] expected = c._2;
+            assertArrayEquals(expected, actual);
+        });
     }
 
 }

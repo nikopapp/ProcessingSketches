@@ -5,8 +5,11 @@ import com.nikpappas.processing.core.Trio;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+import static java.lang.Math.max;
+import static java.util.Collections.emptySet;
+import static java.util.stream.IntStream.range;
 
 public class ConwaysCube {
     private Map<Integer, Map<Integer, Map<Integer, Character>>> cube;
@@ -86,9 +89,9 @@ public class ConwaysCube {
         ConwaysCube buffer = clone();
         int newMinExtent = getMinExtent() - 2;
         int newPosExtent = getPosExtent() + 2;
-        IntStream.range(newMinExtent, newPosExtent).forEach(
-                x -> IntStream.range(newMinExtent, newPosExtent).forEach(
-                        y -> IntStream.range(newMinExtent, newPosExtent).forEach(
+        range(newMinExtent, newPosExtent).forEach(
+                x -> range(newMinExtent, newPosExtent).forEach(
+                        y -> range(newMinExtent, newPosExtent).forEach(
                                 z -> {
                                     int alive = buffer.countAliveNeighbours(x, y, z);
                                     if (buffer.isAlive(x, y, z) && (5 >= alive || alive >= 13)) {
@@ -139,6 +142,9 @@ public class ConwaysCube {
     }
 
     public Set<Trio<Integer>> getCoords() {
+        if (cube == null) {
+            return emptySet();
+        }
         Set<Trio<Integer>> trios = new HashSet<>();
         cube.forEach(((x, xvals) ->
                 xvals.forEach((y, yvals) ->
@@ -149,25 +155,26 @@ public class ConwaysCube {
 
     public String toHashString() {
         StringBuilder res = new StringBuilder();
-        IntStream.range(minExtent, posExtent + 1).forEach(x ->
-                IntStream.range(minExtent, posExtent + 1).forEach(y ->
-                        IntStream.range(minExtent, posExtent + 1).forEach(z -> {
+        range(minExtent, posExtent + 1).forEach(x ->
+                range(minExtent, posExtent + 1).forEach(y ->
+                        range(minExtent, posExtent + 1).forEach(z -> {
                             res.append(get(x, y, z));
                         })));
+
         return res.toString();
     }
 
     public int getAbsExtent() {
-        return Math.max(abs(minExtent), posExtent);
+        return max(abs(minExtent), posExtent);
     }
 
     public String toHashStringBounding() {
         StringBuilder res = new StringBuilder();
         StringBuilder buffer = new StringBuilder();
         int extentCur = getAbsExtent();
-        IntStream.range(-extentCur, extentCur + 1).forEach(x ->
-                IntStream.range(-extentCur, extentCur + 1).forEach(y ->
-                        IntStream.range(-extentCur, extentCur + 1).forEach(z -> {
+        range(-extentCur, extentCur + 1).forEach(x ->
+                range(-extentCur, extentCur + 1).forEach(y ->
+                        range(-extentCur, extentCur + 1).forEach(z -> {
                             char c = get(x, y, z);
                             if (res.length() == 0 && c == '#') {
                                 res.append(c);
@@ -219,8 +226,39 @@ public class ConwaysCube {
         return cons;
     }
 
+    public String[][] toStringArray() {
+        if (getCoords().isEmpty()) {
+            return new String[][]{{}};
+        }
+        int maxXCoord = getCoords().stream().mapToInt(x -> x._1).max().orElse(maxExtent);
+        int minXCoord = getCoords().stream().mapToInt(x -> x._1).min().orElse(minExtent);
+        int xLimit = maxXCoord - minXCoord + 1;
+        int maxYCoord = getCoords().stream().mapToInt(x -> x._2).max().orElse(maxExtent);
+        int minYCoord = getCoords().stream().mapToInt(x -> x._2).min().orElse(minExtent);
+        int yLimit = maxYCoord - minYCoord + 1;
+        int maxZCoord = getCoords().stream().mapToInt(x -> x._3).max().orElse(maxExtent);
+        int minZCoord = getCoords().stream().mapToInt(x -> x._3).min().orElse(minExtent);
+        int zLimit = maxZCoord - minZCoord + 1;
+        String[][] res = new String[xLimit][yLimit];
+        range(0, xLimit).forEach(x -> {
+            range(0, yLimit).forEach(y -> {
+                StringBuilder sb = new StringBuilder();
+                range(0, zLimit).forEach(z -> {
+                    sb.append(get(x + minXCoord, y + minYCoord, z + minZCoord));
+                });
+                res[x][y] = sb.toString();
+            });
+        });
+
+        return res;
+    }
+
     public static ConwaysCube parse(String input) {
-        List<List<String>> init = Arrays.stream(input.split("--")).map(String::trim).map(x -> Arrays.stream(x.split(",")).map(s -> s.trim()).collect(Collectors.toList())).collect(Collectors.toList());
+        List<List<String>> init = Arrays.stream(input.split("--"))
+                .map(String::trim).map(x -> Arrays.stream(x.split(","))
+                        .map(s -> s.replace("[", "").replace("]", "").trim())
+                        .collect(Collectors.toList()))
+                .collect(Collectors.toList());
         return of(init);
     }
 }
