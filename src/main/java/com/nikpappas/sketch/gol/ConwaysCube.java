@@ -1,6 +1,7 @@
 package com.nikpappas.sketch.gol;
 
-import com.nikpappas.processing.core.Trio;
+
+import com.nikpappas.utils.collection.Trio;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;

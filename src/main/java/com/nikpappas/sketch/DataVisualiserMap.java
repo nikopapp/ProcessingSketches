@@ -1,7 +1,7 @@
 package com.nikpappas.sketch;
 
-import com.nikpappas.processing.core.Couple;
-import com.nikpappas.processing.core.Pair;
+import com.nikpappas.utils.collection.Couple;
+import com.nikpappas.utils.collection.Pair;
 import processing.core.PApplet;
 import processing.core.PImage;
 
@@ -91,9 +91,6 @@ public class DataVisualiserMap extends PApplet {
 
     @Override
     public void setup() {
-        color(0, 0.4f);
-        background(1, 1, 1);
-
     }
 
     @Override
@@ -101,7 +98,7 @@ public class DataVisualiserMap extends PApplet {
         background(256, 256, 256);
         image(worldMap, -5, -5, width + 10, height + 10);
         pushMatrix();
-        translate((width / 2), height / 2);
+        translate(width * .5f, height * .5f);
 
         stroke(230, 150, 170, 40);
 

@@ -1,6 +1,6 @@
 package com.nikpappas.sketch.shapes3d;
 
-import com.nikpappas.processing.core.Trio;
+import com.nikpappas.utils.collection.Trio;
 import processing.core.PApplet;
 
 import java.util.LinkedList;
@@ -22,6 +22,7 @@ public class SpiralSlow extends PApplet {
     public void settings() {
 //        size(1100, 900, P3D);
         fullScreen(P3D);
+
     }
 
     @Override

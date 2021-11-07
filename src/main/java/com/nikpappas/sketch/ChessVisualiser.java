@@ -4,8 +4,8 @@ import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.game.Game;
 import com.github.bhlangonijr.chesslib.move.Move;
 import com.github.bhlangonijr.chesslib.pgn.GameLoader;
-import com.nikpappas.processing.core.Couple;
 import com.nikpappas.sketch.chess.ChessPiece;
+import com.nikpappas.utils.collection.Couple;
 import processing.core.PApplet;
 import processing.core.PImage;
 

@@ -7,15 +7,6 @@ import static com.nikpappas.processing.benchmark.Timing.timed;
 public class GameOfLife3D extends PApplet {
 
     private ConwaysCube cube = new ConwaysCube();
-//[.##, .##, ...] 1 1 REPEAT
-//[##., ##., ...] 1 1 REPEAT
-//[#.., .##, .#.] 14 14 REPEAT
-//[#.., ..#, .##] 10 10 REPEAT
-//[..., .##, .##] 1 1 REPEAT
-//[##., .#., #..] 8 8 REPEAT
-//[##., ##., #..] 15 15 REPEAT
-//[..., ##., ##.] 1 1 REPEAT
-//[###, ###, ##.] 7 7 REPEAT
 
     float rotation = 0;
     int firsttimestamp = millis();
@@ -25,9 +16,7 @@ public class GameOfLife3D extends PApplet {
     float scaleC = 20;
     float colourScale = 20;
     private static final int BACKGROUND = 200;
-
-    private int iteration = 0;
-
+    private static int iteration = 0;
 
     public static void main(String[] args) {
         PApplet.main(Thread.currentThread().getStackTrace()[1].getClassName());
@@ -35,12 +24,14 @@ public class GameOfLife3D extends PApplet {
 
     @Override
     public void settings() {
-//        fullScreen(P3D);
         fullScreen(P3D, 1);
 //        size(900, 800, P3D);
-
-        String init = "[.##..., #....., #####., ......, ...#.., ......] -- [#.#.##, ###..#, #..##., ..#.#., #..###, #.#...] -- [.....#, ......, #.#.#., .##.##, ##...#, ####.#] -- [#.##.#, ###.#., ##...#, ..#..#, ....#., .#...#] -- [##...., .#...#, #.####, ####.., ##.##., #.##.#] -- [#.####, ......, .....#, .#.###, .#.###, ..#..#]";
-        cube = ConwaysCube.parse(init);
+        String[][] init = new String[][]{
+                {"###", "..#", "###"},
+                {"###", "##.", "..."}
+        };
+//        String init = "[.##..., #....., #####., ......, ...#.., ......] -- [#.#.##, ###..#, #..##., ..#.#., #..###, #.#...] -- [.....#, ......, #.#.#., .##.##, ##...#, ####.#] -- [#.##.#, ###.#., ##...#, ..#..#, ....#., .#...#] -- [##...., .#...#, #.####, ####.., ##.##., #.##.#] -- [#.####, ......, .....#, .#.###, .#.###, ..#..#]";
+        cube = ConwaysCube.of(init);
     }
 
     @Override
@@ -52,7 +43,7 @@ public class GameOfLife3D extends PApplet {
     public void draw() {
         background(BACKGROUND);
         pushMatrix();
-        translate(width / 2, height / 2, 0);
+        translate(width * .5f, height * .5f, 0);
 
         int posExtent = cube.getPosExtent();
         int minExtent = cube.getMinExtent();
@@ -88,7 +79,6 @@ public class GameOfLife3D extends PApplet {
     private void drawCubes(int extent) {
         cube.getCoords().stream()
                 // Ommit the center ones
-//                .filter(x -> abs(x._1) + abs(x._2) + abs(x._3) > extent)
                 .forEach(t -> {
                     if (cube.isAlive(t._1, t._2, t._3)) {
                         pushMatrix();

@@ -1,8 +1,9 @@
 package com.nikpappas.sketch.gol;
 
-import com.nikpappas.processing.core.Couple;
-import com.nikpappas.processing.core.Pair;
-import com.nikpappas.processing.core.Triplet;
+
+import com.nikpappas.utils.collection.Couple;
+import com.nikpappas.utils.collection.Pair;
+import com.nikpappas.utils.collection.Triplet;
 
 import java.util.*;
 import java.util.stream.Collectors;

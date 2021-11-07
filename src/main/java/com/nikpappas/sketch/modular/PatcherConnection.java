@@ -1,27 +1,26 @@
 package com.nikpappas.sketch.modular;
 
-import com.nikpappas.processing.core.Couple;
 
+import com.nikpappas.utils.collection.Couple;
+
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import static java.util.Collections.emptyList;
-import static java.util.Collections.emptySet;
 
-public class PatcherConnections {
+public class PatcherConnection {
 
     int id1;
     int id2;
     List<Couple<Float>> pins;
 
-    private PatcherConnections(int id1, int id2, List<Couple<Float>> pins) {
+    private PatcherConnection(int id1, int id2, List<Couple<Float>> pins) {
         this.id1 = id1;
         this.id2 = id2;
         this.pins = pins;
     }
 
-
-    public static PatcherConnections of(int id1, int id2) {
-        return new PatcherConnections(id1, id2, emptyList());
+    public static PatcherConnection of(int id1, int id2) {
+        return new PatcherConnection(id1, id2, new ArrayList<>());
     }
 }
