@@ -13,12 +13,21 @@ repositories {
 
 dependencies {
     implementation(
-            'org.processing:core:3.3.7',
+//            'org.processing:core:3.3.7',
             files('/Users/nikos/.m2/repository/com/github/bhlangonijr/chesslib/chesslib/1.2.5/chesslib-1.2.5.jar'),
-            files('/Users/nikos/libs/org/processing/processing-core/core.jar'),
-            files('/Users/nikos/libs/org/processing/processing-sound/sound.jar'),
+            files('/Users/nikos/libs/org/processing/processing-core/v4/core.jar'),
+            files('/Users/nikos/libs/org/processing/processing-sound/v2.3.2-dev/sound.jar'),
             files('/Users/nikos/libs/org/processing/processing-sound/jsyn-20171016.jar'),
+            'com.nikpappas.utils:utils:1.0.1-SNAPSHOT',
+//            'org.jogamp.jogl:jogl-all-main:2.3.2',
+            'org.jogamp.jogl:jogl-all:2.3.2',
+            'org.jogamp.gluegen:gluegen-rt-main:2.3.2',
+//            'org.jogamp.jogl:nativewindow:2.3.2',
+//            'org.jogamp.jogl:jogl-all-natives-macosx-universal:v2.3.2'
+
+
     )
+
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
@@ -29,4 +38,7 @@ test {
 
 run {
     mainClassName = 'com.nikpappas.sketch.Beets2Hoops'
+}
+wrapper {
+    gradleVersion = "7.1"
 }
