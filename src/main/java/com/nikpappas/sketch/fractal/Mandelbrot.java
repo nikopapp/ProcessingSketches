@@ -2,8 +2,24 @@ package com.nikpappas.sketch.fractal;
 
 import processing.core.PApplet;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
+
 public class Mandelbrot extends PApplet {
-    public static final int MAX_ITER = 80;
+    private static final int NUM_OF_THREADS = 2;
+    private List<ComplexAny> toDraw;
+
+    Runnable findBrots = () -> {
+        System.out.println("StartedBroting");
+        while (true) {
+            ComplexAny c = ComplexBD.of(random(-2, 2), random(-2, 2));
+            if (MandelbrotSet.contains(c)) {
+                toDraw.add(c);
+                System.out.println(toDraw.size() + " - " + c + ": Is mandel");
+            }
+        }
+    };
 
     public static void main(String[] args) {
         PApplet.main(Thread.currentThread().getStackTrace()[1].getClassName());
@@ -11,34 +27,45 @@ public class Mandelbrot extends PApplet {
 
     @Override
     public void settings() {
-        size(900,800);
+        size(900, 800);
+        toDraw = new ArrayList<>();
+        IntStream.range(0, NUM_OF_THREADS)
+                .mapToObj(x -> findBrots)
+                .map(Thread::new)
+                .forEach(Thread::start);
     }
 
     @Override
     public void setup() {
-        background(33);
+        background(55);
     }
 
     @Override
     public void draw() {
-//        for a in range(-10, 10, 5):
-//        for b in range(-10, 10, 5):
-//        c = complex(a / 10, b / 10)
-//        print(c, mandelbrot(c))
+        background(55);
+        pushMatrix();
+        translate(width / 2, height / 2);
 
 
-    }
-
-    private int mandelbrot(int c){
-        int z=0;
-        int n=0;
-        while (abs(z) <= 2 && n < MAX_ITER){
-            z = z*z+c;
-            n++;
+        float scale = 140f;
+        stroke(144);
+        noFill();
+        circle(0, 0, scale * 4);
+        noStroke();
+        fill(255);
+        int i = 1;
+        for (ComplexAny x : toDraw) {
+            float coordX = (float) (scale * x.real());
+            float coordY = (float) -(scale * x.imaginary());
+            circle(coordX, coordY, 5);
+            text(i++, coordX - 5, coordY - 5);
         }
-        return n;
-    }
 
+        delay(100);
+
+
+        popMatrix();
+    }
 
 
 }

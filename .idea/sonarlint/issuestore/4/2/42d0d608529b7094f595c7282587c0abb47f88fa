@@ -1,12 +1,0 @@
-
-N	java:S106"9Replace this use of System.out or System.err by a logger.(è–²Þ
-V	java:S125"<This block of commented-out lines of code should be removed.(•»Æ¾ÿÿÿÿÿ
-S	java:S106"9Replace this use of System.out or System.err by a logger.(‰ˆÞ§øÿÿÿÿ
-S	java:S106"9Replace this use of System.out or System.err by a logger.(›ñ©¿ûÿÿÿÿ
-S	java:S106"9Replace this use of System.out or System.err by a logger.(ÎÜÉüøÿÿÿÿ
-N	java:S106%"9Replace this use of System.out or System.err by a logger.(ö½û‰
-S	java:S106("9Replace this use of System.out or System.err by a logger.(›ñ©¿ûÿÿÿÿ
-N	java:S106)"9Replace this use of System.out or System.err by a logger.(€«Ÿ
-S	java:S1069"9Replace this use of System.out or System.err by a logger.(ãŒÂÔøÿÿÿÿ
-k	java:S117^"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(„Ââ›øÿÿÿÿ
-r	java:S117_"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÀÞ¡öýÿÿÿÿ8¾»Î‡Ç/

@@ -1,2 +1,0 @@
-com/nikpappas/sketch/gol/ConwaysCubeTest.java
- com.nikpappas.sketch.gol.ConwaysCubeTest
