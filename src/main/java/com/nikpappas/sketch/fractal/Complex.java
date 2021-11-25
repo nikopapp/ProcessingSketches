@@ -26,17 +26,23 @@ public class Complex extends Number implements ComplexAny {
      * @return (ar + ai * i)*(br + bi*i) =
      * ar*br-ai*bi , br*ai+ar*bi
      */
-    public Complex multiply(Complex toMultiply) {
+    public ComplexAny multiply(ComplexAny toMultiply) {
         double ar = real;
         double ai = imaginary;
-        double br = toMultiply.real;
-        double bi = toMultiply.imaginary;
+        double br = toMultiply.real();
+        double bi = toMultiply.imaginary();
 
 
         return of((ar * br) - ai * bi, ai * br + bi * ar);
     }
 
-    public Complex square() {
+    @Override
+    public ComplexAny multiply(int i) {
+        return Complex.of(this.real * i, this.imaginary * i);
+    }
+
+
+    public ComplexAny square() {
         return this.multiply(this);
     }
 
@@ -57,7 +63,7 @@ public class Complex extends Number implements ComplexAny {
 
     @Override
     public float floatValue() {
-        return (float)abs();
+        return (float) abs();
     }
 
     @Override
@@ -66,12 +72,12 @@ public class Complex extends Number implements ComplexAny {
     }
 
     public double abs() {
-        return Math.sqrt((real*real)+(imaginary*imaginary));
+        return Math.sqrt((real * real) + (imaginary * imaginary));
     }
 
     @Override
     public ComplexAny add(ComplexAny c) {
-        return of(real+c.real(),imaginary+c.imaginary());
+        return of(real + c.real(), imaginary + c.imaginary());
     }
 
     @Override
@@ -110,6 +116,27 @@ public class Complex extends Number implements ComplexAny {
         return new Complex(real, imaginary);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Complex complex = (Complex) o;
+
+        if (Double.compare(complex.real, real) != 0) return false;
+        return Double.compare(complex.imaginary, imaginary) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(real);
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(imaginary);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
 
     @Override
     public String toString() {

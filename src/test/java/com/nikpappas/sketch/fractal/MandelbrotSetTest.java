@@ -20,7 +20,7 @@ class MandelbrotSetTest {
         );
         nums.forEach(x -> {
 
-            boolean is = MandelbrotSet.contains(x);
+            boolean is = MandelbrotSet.ofSquare().contains(x);
             System.out.println(x + ": " + is);
         });
     }
@@ -32,7 +32,7 @@ class MandelbrotSetTest {
             double rand1 = Math.random() * 4 - 2;
             double rand2 = Math.random() * 4 - 2;
             Complex c = Complex.of(rand1, rand2);
-            is = MandelbrotSet.contains(c);
+            is = MandelbrotSet.ofSquare().contains(c);
             System.out.println(c + ": " + is);
         }
 

@@ -6,6 +6,8 @@ import java.math.MathContext;
 import java.util.Comparator;
 import java.util.Optional;
 
+import static java.math.BigDecimal.valueOf;
+
 public class ComplexBD extends Number implements ComplexAny {
     public static final ComplexBD ZERO = ComplexBD.of(BigDecimal.ZERO, BigDecimal.ZERO);
     private final MathContext MATH_CONTEXT = new MathContext(16);
@@ -35,17 +37,17 @@ public class ComplexBD extends Number implements ComplexAny {
      * @return (ar + ai * i)*(br + bi*i) =
      * ar*br-ai*bi , br*ai+ar*bi
      */
-    public ComplexBD multiply(ComplexBD toMultiply) {
+    public ComplexAny multiply(ComplexAny toMultiply) {
         BigDecimal ar = real;
         BigDecimal ai = imaginary;
-        BigDecimal br = toMultiply.real;
-        BigDecimal bi = toMultiply.imaginary;
+        BigDecimal br = valueOf(toMultiply.real());
+        BigDecimal bi = valueOf(toMultiply.imaginary());
 
 
         return of((ar.multiply(br)).subtract(ai.multiply(bi)), (ai.multiply(br)).add(bi.multiply(ar)));
     }
 
-    public ComplexBD square() {
+    public ComplexAny square() {
         return this.multiply(this);
     }
 
@@ -88,6 +90,11 @@ public class ComplexBD extends Number implements ComplexAny {
         return real.doubleValue();
     }
 
+    @Override
+    public ComplexAny multiply(int i) {
+        return ComplexBD.of(real.multiply(valueOf(i)), imaginary.multiply(valueOf(i)));
+    }
+
     public static ComplexBD max(ComplexBD a, ComplexBD b) {
         return a.compareTo(b) > 0 ? a : b;
     }
@@ -104,19 +111,19 @@ public class ComplexBD extends Number implements ComplexAny {
     }
 
     public static ComplexBD of(double real, double imaginary) {
-        return of(BigDecimal.valueOf(real), BigDecimal.valueOf(imaginary));
+        return of(valueOf(real), valueOf(imaginary));
     }
 
     public static ComplexBD of(long real, long imaginary) {
-        return of(BigDecimal.valueOf(real), BigDecimal.valueOf(imaginary));
+        return of(valueOf(real), valueOf(imaginary));
     }
 
     public static ComplexBD of(int real, int imaginary) {
-        return of(BigDecimal.valueOf(real), BigDecimal.valueOf(imaginary));
+        return of(valueOf(real), valueOf(imaginary));
     }
 
     public static ComplexBD of(float real, float imaginary) {
-        return of(BigDecimal.valueOf(real), BigDecimal.valueOf(imaginary));
+        return of(valueOf(real), valueOf(imaginary));
     }
 
     @Override
