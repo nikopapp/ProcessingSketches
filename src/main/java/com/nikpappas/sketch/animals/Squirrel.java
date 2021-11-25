@@ -1,6 +1,6 @@
 package com.nikpappas.sketch.animals;
 
-import com.nikpappas.processing.core.Pair;
+import com.nikpappas.utils.collection.Pair;
 import processing.core.PApplet;
 
 public class Squirrel extends PApplet {

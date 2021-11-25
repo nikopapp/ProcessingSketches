@@ -1,11 +1,13 @@
 package com.nikpappas.sketch.gol;
 
-import com.nikpappas.processing.core.Pair;
-import com.nikpappas.processing.core.Trio;
-import com.nikpappas.processing.core.Triplet;
+import com.nikpappas.utils.collection.Trio;
+import com.nikpappas.utils.collection.Triplet;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
+
+import com.nikpappas.utils.collection.Pair;
+
 
 import java.util.Arrays;
 import java.util.List;

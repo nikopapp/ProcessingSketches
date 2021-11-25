@@ -1,6 +1,6 @@
 package com.nikpappas.sketch.shapes3d;
 
-import com.nikpappas.processing.core.Trio;
+import com.nikpappas.utils.collection.Trio;
 import processing.core.PApplet;
 
 import java.util.ArrayList;

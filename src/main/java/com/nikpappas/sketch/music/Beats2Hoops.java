@@ -1,6 +1,6 @@
 package com.nikpappas.sketch.music;
 
-import com.nikpappas.processing.core.Trio;
+import com.nikpappas.utils.collection.Trio;
 import processing.core.PApplet;
 import processing.sound.AudioIn;
 import processing.sound.FFT;

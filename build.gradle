@@ -13,12 +13,19 @@ repositories {
 
 dependencies {
     implementation(
-            'org.processing:core:3.3.7',
+//            'org.processing:core:3.3.7',
             files('/Users/nikos/.m2/repository/com/github/bhlangonijr/chesslib/chesslib/1.2.5/chesslib-1.2.5.jar'),
-            files('/Users/nikos/libs/org/processing/processing-core/core.jar'),
+            files('/Users/nikos/libs/org/processing/processing-core/v4/core.jar'),
             files('/Users/nikos/libs/org/processing/processing-sound/sound.jar'),
             files('/Users/nikos/libs/org/processing/processing-sound/jsyn-20171016.jar'),
+            files('/Users/nikos/libs/com/jogl/jogl-all-natives-macosx-universal.jar'),
+            files('/Users/nikos/libs/com/jogl/jogl-all.jar'),
+            files('/Users/nikos/libs/com/jogl/gluegen-rt-natives-macosx-universal.jar'),
+            files('/Users/nikos/libs/com/jogl/gluegen-rt.jar'),
+            'com.nikpappas.utils:utils:1.0.1-SNAPSHOT',
+
     )
+
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
@@ -28,5 +35,8 @@ test {
 }
 
 run {
-    mainClassName = 'com.nikpappas.sketch.Beets2Hoops'
+//    mainClassName = 'com.nikpappas..sketch.Beets2Hoops'
+}
+wrapper {
+    gradleVersion = "6.7"
 }

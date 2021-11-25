@@ -1,6 +1,6 @@
 package com.nikpappas.sketch.fractal;
 
-import com.nikpappas.processing.core.Couple;
+import com.nikpappas.utils.collection.Couple;
 import processing.core.PApplet;
 
 import java.util.ArrayList;
